@@ -1,0 +1,145 @@
+{
+  "contractName": "IERC721Metadata",
+  "abi": [
+    {
+      "inputs": [],
+      "name": "name",
+      "outputs": [
+        {
+          "internalType": "string",
+          "name": "_name",
+          "type": "string"
+        }
+      ],
+      "stateMutability": "view",
+      "type": "function"
+    }
+  ],
+  "metadata": "{\"compiler\":{\"version\":\"0.8.17+commit.8df45f5f\"},\"language\":\"Solidity\",\"output\":{\"abi\":[{\"inputs\":[],\"name\":\"name\",\"outputs\":[{\"internalType\":\"string\",\"name\":\"_name\",\"type\":\"string\"}],\"stateMutability\":\"view\",\"type\":\"function\"}],\"devdoc\":{\"kind\":\"dev\",\"methods\":{},\"version\":1},\"userdoc\":{\"kind\":\"user\",\"methods\":{},\"version\":1}},\"settings\":{\"compilationTarget\":{\"project:/src/contracts/interfaces/IERC721Metadata.sol\":\"IERC721Metadata\"},\"evmVersion\":\"london\",\"libraries\":{},\"metadata\":{\"bytecodeHash\":\"ipfs\"},\"optimizer\":{\"enabled\":false,\"runs\":200},\"remappings\":[]},\"sources\":{\"project:/src/contracts/interfaces/IERC721Metadata.sol\":{\"keccak256\":\"0x48e1f965ba1c3d84c11b71b0455ce9a710d6230ff13f21cfa8d23ded8af4cf88\",\"license\":\"MIT\",\"urls\":[\"bzz-raw://772bda2e8beb7855cefdf319ac1b4f9da9014f9c5deb88e8efb322a284a2c9ab\",\"dweb:/ipfs/Qmb3bSHg41RB4pK1KQRgJ8ak6RKKaywmEQqdrcXruFsEnA\"]}},\"version\":1}",
+  "bytecode": "0x",
+  "deployedBytecode": "0x",
+  "immutableReferences": {},
+  "generatedSources": [],
+  "deployedGeneratedSources": [],
+  "sourceMap": "",
+  "deployedSourceMap": "",
+  "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ninterface IERC721Metadata {\r\n    \r\n    function name() external view returns (string memory _name);\r\n\r\n   \r\n    //function symbol() external view returns (string memory _symbol);\r\n\r\n    \r\n    //function tokenURI(uint256 _tokenId) external view returns (string memory);\r\n}",
+  "sourcePath": "C:\\Users\\GustavAlbrecht-JU21S\\websocket-projects\\emotiv-websocket-app\\solidity\\src\\contracts\\interfaces\\IERC721Metadata.sol",
+  "ast": {
+    "absolutePath": "project:/src/contracts/interfaces/IERC721Metadata.sol",
+    "exportedSymbols": {
+      "IERC721Metadata": [
+        1908
+      ]
+    },
+    "id": 1909,
+    "license": "MIT",
+    "nodeType": "SourceUnit",
+    "nodes": [
+      {
+        "id": 1902,
+        "literals": [
+          "solidity",
+          "^",
+          "0.8",
+          ".0"
+        ],
+        "nodeType": "PragmaDirective",
+        "src": "33:23:15"
+      },
+      {
+        "abstract": false,
+        "baseContracts": [],
+        "canonicalName": "IERC721Metadata",
+        "contractDependencies": [],
+        "contractKind": "interface",
+        "fullyImplemented": false,
+        "id": 1908,
+        "linearizedBaseContracts": [
+          1908
+        ],
+        "name": "IERC721Metadata",
+        "nameLocation": "70:15:15",
+        "nodeType": "ContractDefinition",
+        "nodes": [
+          {
+            "functionSelector": "06fdde03",
+            "id": 1907,
+            "implemented": false,
+            "kind": "function",
+            "modifiers": [],
+            "name": "name",
+            "nameLocation": "108:4:15",
+            "nodeType": "FunctionDefinition",
+            "parameters": {
+              "id": 1903,
+              "nodeType": "ParameterList",
+              "parameters": [],
+              "src": "112:2:15"
+            },
+            "returnParameters": {
+              "id": 1906,
+              "nodeType": "ParameterList",
+              "parameters": [
+                {
+                  "constant": false,
+                  "id": 1905,
+                  "mutability": "mutable",
+                  "name": "_name",
+                  "nameLocation": "152:5:15",
+                  "nodeType": "VariableDeclaration",
+                  "scope": 1907,
+                  "src": "138:19:15",
+                  "stateVariable": false,
+                  "storageLocation": "memory",
+                  "typeDescriptions": {
+                    "typeIdentifier": "t_string_memory_ptr",
+                    "typeString": "string"
+                  },
+                  "typeName": {
+                    "id": 1904,
+                    "name": "string",
+                    "nodeType": "ElementaryTypeName",
+                    "src": "138:6:15",
+                    "typeDescriptions": {
+                      "typeIdentifier": "t_string_storage_ptr",
+                      "typeString": "string"
+                    }
+                  },
+                  "visibility": "internal"
+                }
+              ],
+              "src": "137:21:15"
+            },
+            "scope": 1908,
+            "src": "99:60:15",
+            "stateMutability": "view",
+            "virtual": false,
+            "visibility": "external"
+          }
+        ],
+        "scope": 1909,
+        "src": "60:271:15",
+        "usedErrors": []
+      }
+    ],
+    "src": "33:298:15"
+  },
+  "compiler": {
+    "name": "solc",
+    "version": "0.8.17+commit.8df45f5f.Emscripten.clang"
+  },
+  "networks": {},
+  "schemaVersion": "3.4.7",
+  "updatedAt": "2022-10-12T19:11:56.714Z",
+  "devdoc": {
+    "kind": "dev",
+    "methods": {},
+    "version": 1
+  },
+  "userdoc": {
+    "kind": "user",
+    "methods": {},
+    "version": 1
+  }
+}
