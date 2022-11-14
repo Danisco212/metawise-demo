@@ -1,2 +1,0 @@
-Write notes for project
-
