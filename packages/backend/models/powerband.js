@@ -2,6 +2,71 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const powerbandSchema = new Schema({
+
+    signalquality: { type: [[{}]], required: true },
+
+    raweeg: {
+        type: [{
+            data: [
+                {
+                    type: [Number],
+                    required: true
+ 
+                },
+                {
+                    type: [Number],
+                    required: true
+ 
+                },
+                {
+                    type: [Number],
+                    required: true
+ 
+                },
+                {
+                    type: [Number],
+                    required: true
+ 
+                },
+                {
+                    type: [Number],
+                    required: true
+ 
+                },
+                {
+                    type: [Number],
+                    required: true
+ 
+                },
+                {
+                    type: [Number],
+                    required: true
+ 
+                },
+                {
+                    type: [Number],
+                    required: true
+ 
+                },
+            ],
+            info: {
+                channelNames: {
+                    type: [String],
+                    required: true
+ 
+
+                },
+                notchFrequency: {type: String},
+                samplingRate: {type: Number, required: true},
+                startTime: {type: Number, required: true}
+            },
+            label: {
+                type: String
+            },
+
+        }]
+
+    },
     powerband: {
         type: [{
             data: {
@@ -23,7 +88,9 @@ const powerbandSchema = new Schema({
                 },
                 theta: {
                     type: [Number],
-                }
+                },
+
+
             },
             label: {
                 type: String

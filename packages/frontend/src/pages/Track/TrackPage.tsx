@@ -11,6 +11,8 @@ let notion:any
 const TrackPage = (props: any) => {
     const [tracking, setTracking] = useState(false)
     const [trackedData, setTrackedData] = useState<any>([])
+    const [trackedDataEEG, setTrackedDataEEG] = useState<any>([])
+    const [trackedDataSignalQuality, setTrackedDataSignalQuality] = useState<any>([])
     const randomIntFromInterval = (min: number, max: number) => { // min and max included 
         return Math.floor(Math.random() * (max - min + 1) + min)
     }
@@ -27,18 +29,31 @@ const TrackPage = (props: any) => {
             notion = props.authData.notion.brainwaves("powerByBand").subscribe((brainwaves: any) => {
                 setTrackedData((prev: any) => [...prev, brainwaves])
             });
+            notion = props.authData.notion.brainwaves("raw").subscribe((brainwaves: any) => {
+                setTrackedDataEEG((prev: any) => [...prev, brainwaves])
+                console.log("eegdata: ", brainwaves)
+            });
+            notion = props.authData.notion.signalQuality().subscribe((signalQuality: any) => {
+                setTrackedDataSignalQuality((prev: any) => [...prev, signalQuality])
+                console.log("signalquality: ", signalQuality)
+            });
         }
     }
 
+
     const stopReading = () => {
         toast('Tracking completed')
+        
         setTracking(false)
         notion.unsubscribe();
-        console.log('the tracked data is', trackedData);
+        console.log('the tracked data is', trackedDataSignalQuality, trackedDataEEG, trackedData);
         // hard coded saving
-        axios.post("localhost:5676", trackedData)
+        axios.post("http://localhost:5676/api/v1/powerband/save", { signalquality: trackedDataSignalQuality, raweeg: trackedDataEEG ,powerband: trackedData })
         .then(res => toast("Data saved successfully"))
         .catch(err => toast.error("Data failed to save"))
+        setTrackedData([]);
+        setTrackedDataEEG([]);
+        setTrackedDataSignalQuality([]);
     }
     return(
         <div className="h-screen bg-slate-200">

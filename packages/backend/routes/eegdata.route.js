@@ -9,8 +9,10 @@ router.get('/eeg/view', async (req, res, next) => {
 })
 
 router.post('/powerband/save', async (req, res, next) => {
-    const {powerband} = req.body
+    const {signalquality, raweeg, powerband} = req.body
     await PowerbandData.create({
+        signalquality: signalquality,
+        raweeg: raweeg,
         powerband: powerband
     })
     return res.json({status: true, message: "The powerband is saved"})
