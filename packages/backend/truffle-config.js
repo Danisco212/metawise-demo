@@ -32,7 +32,7 @@ module.exports = {
       
   },
   contracts_directory: './web3/contracts/',
-  contracts_build_directory: '../frontend/src/abis/',  
+  contracts_build_directory: '../frontend/src/pages/Web3/abis',  
  
   compilers: {
     solc: {
@@ -50,3 +50,4 @@ module.exports = {
 
  // transaction hash:    0x402697cabb3aa3c51ac212a9f3b8649a48b6f3cb4582ef6ec899814aefd3f8cd
  // contract address:    0x1f95914Fb1D95d733A0824F5456D3Ca1Fe60e27f
+ // new contract address: 0x7BFe396a9D44aeEc5a8C209A26d07d8B38e577Ff

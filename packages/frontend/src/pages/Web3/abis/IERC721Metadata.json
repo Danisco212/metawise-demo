@@ -24,7 +24,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ninterface IERC721Metadata {\r\n    \r\n    function name() external view returns (string memory _name);\r\n\r\n   \r\n    //function symbol() external view returns (string memory _symbol);\r\n\r\n    \r\n    //function tokenURI(uint256 _tokenId) external view returns (string memory);\r\n}",
-  "sourcePath": "C:\\Users\\GustavAlbrecht-JU21S\\metawise-projects\\metawise-dojo\\Metawise-Dojo\\packages\\backend\\web3\\interfaces\\IERC721Metadata.sol",
+  "sourcePath": "C:\\Users\\GustavAlbrecht-JU21S\\metawise-projects\\Metawise-Dojo\\Metawise-Dojo\\packages\\backend\\web3\\interfaces\\IERC721Metadata.sol",
   "ast": {
     "absolutePath": "project:/web3/interfaces/IERC721Metadata.sol",
     "exportedSymbols": {
@@ -131,7 +131,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-11-28T19:36:22.422Z",
+  "updatedAt": "2022-11-30T13:48:26.048Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

@@ -1,9 +1,11 @@
+// @ts-nocheck
 import React, { useEffect, useState } from "react";
 import { logo, profileImg } from "../assets";
 import { AiOutlineLogout } from 'react-icons/ai'
 import { useCookies } from "react-cookie"
 import { connect } from "react-redux";
 import { MdAccountBalance, MdAccountBalanceWallet } from "react-icons/md";
+import  MetaMaskAuth  from "./Metamaskauth"
 
 
 let notion: any
@@ -20,6 +22,9 @@ type NotionStatus = {
 }
 export const Header = (props: any) => {
     const [notionStatus, setNotionStatus] = useState<NotionStatus>()
+
+    //let connect = connect();
+    
 
   
     useEffect(() => {
@@ -56,6 +61,9 @@ export const Header = (props: any) => {
                     <p className="text-sm">{notionStatus.battery}%</p>
                 </div>
             )}
+            <div>
+                <MetaMaskAuth></MetaMaskAuth>
+            </div>
           
             <div className="flex flex-row items-center">
                 <img className="mr-1 w-10 h-10 rounded-full resize" src={profileImg} alt="" />

@@ -22,9 +22,6 @@ const TrackPage = (props: any) => {
     const [trackedDataSignalQuality, setTrackedDataSignalQuality] = useState<any>([])
     const dataTracking = useRef<any>([]);
     const dataTrackingObject = useRef<any>({});
-
-    const [file, setFile] = useState<any>([]);
-
  
      
 
@@ -58,7 +55,6 @@ const TrackPage = (props: any) => {
             });
 
            
-            jsonfile = JSON.stringify(trackedData)
   
         }
     }
