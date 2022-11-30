@@ -67,7 +67,7 @@
   "sourceMap": "",
   "deployedSourceMap": "",
   "source": "// SPDX-License-Identifier: MIT\r\npragma solidity ^0.8.0;\r\n\r\ninterface IERC721Enumerable  {\r\n \r\n    function totalSupply() external view returns (uint256);\r\n\r\n \r\n    function tokenByIndex(uint256 _index) external view returns (uint256);\r\n\r\n   \r\n    function tokenOfOwnerByIndex(address _owner, uint256 _index) external view returns (uint256);\r\n}",
-  "sourcePath": "C:\\Users\\GustavAlbrecht-JU21S\\metawise-projects\\Metawise-Dojo\\Metawise-Dojo\\packages\\backend\\web3\\interfaces\\IERC721Enumerable.sol",
+  "sourcePath": "C:\\Users\\GustavAlbrecht-JU21S\\metawise-projects\\metawise-dojo\\metawise-dojo\\packages\\backend\\web3\\interfaces\\IERC721Enumerable.sol",
   "ast": {
     "absolutePath": "project:/web3/interfaces/IERC721Enumerable.sol",
     "exportedSymbols": {
@@ -368,7 +368,7 @@
   },
   "networks": {},
   "schemaVersion": "3.4.7",
-  "updatedAt": "2022-11-30T13:48:26.045Z",
+  "updatedAt": "2022-11-30T23:25:32.300Z",
   "devdoc": {
     "kind": "dev",
     "methods": {},

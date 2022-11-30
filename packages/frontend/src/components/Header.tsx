@@ -4,11 +4,9 @@ import { logo, profileImg } from "../assets";
 import { AiOutlineLogout } from 'react-icons/ai'
 import { useCookies } from "react-cookie"
 import { connect } from "react-redux";
-import { MdAccountBalance, MdAccountBalanceWallet } from "react-icons/md";
+import { useNotion } from "../contexts/NotionContext";
 import  MetaMaskAuth  from "./Metamaskauth"
 
-
-let notion: any
 
 type NotionStatus = {
     battery: number
@@ -21,31 +19,28 @@ type NotionStatus = {
     state: string
 }
 export const Header = (props: any) => {
-    const [notionStatus, setNotionStatus] = useState<NotionStatus>()
-
-    //let connect = connect();
-    
-
-  
+    const notion = useNotion()
+    const [notionStatus, setNotionStatus] = useState<NotionStatus>({
+        battery: 0,
+        charging: false,
+        claimedBy: '',
+        lastHeartbeat: 0,
+        onlineSince: 0,
+        sleepMode: false,
+        ssid: '',
+        state: 'connecting...'
+    })
     useEffect(() => {
-        if (notionStatus) {
-            setNotionStatus(notionStatus)
-        }
-    }, [notionStatus])
-
-    useEffect(() => {
-        if(props.authData){
-            notion = props.authData.notion
-            notion.status().subscribe((status: any) => {
-                console.log('notion status', status)
-                setNotionStatus(status)
-            })
-        }
-    }, [props])
+        notion.status().subscribe((status: any) => {
+            console.log('notion status', status)
+            setNotionStatus(status)
+        })
+    }, [notion])
     const [cookie, setCookie] = useCookies(['metawise_auth', 'metawise_user'])
-    const logout = () => {
+    const logout = async () => {
         setCookie('metawise_auth', '', {path: '/'})
         setCookie('metawise_user', '', {path: '/'})
+        await notion.logout()
         window.location.href = '/'
     }
     return(
@@ -64,10 +59,9 @@ export const Header = (props: any) => {
             <div>
                 <MetaMaskAuth></MetaMaskAuth>
             </div>
-          
             <div className="flex flex-row items-center">
                 <img className="mr-1 w-10 h-10 rounded-full resize" src={profileImg} alt="" />
-                <p className="mr-5 text-xs text-neutral-400">{cookie.metawise_user}</p>
+                <p className="mr-5 text-xs text-neutral-400">{notion?.api?.user?.email}</p>
                 <AiOutlineLogout onClick={logout} size={25} className="cursor-pointer" />
             </div>
         </header>

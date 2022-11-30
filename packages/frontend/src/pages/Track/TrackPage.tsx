@@ -1,115 +1,106 @@
 import axios from "axios";
-import React, { useEffect, useState, useRef } from "react";
+import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { toast } from "react-toastify";
-import { json } from "stream/consumers";
 import { StartButton } from "../../components";
 import Header from "../../components/Header";
 import Pulser from "../../components/Pulser/Pulser";
 import { SideMenu } from "../../components/SideMenu";
-
-
-
-let notion:any
-let notion2: any
-let notion3: any
-let jsonfile: any; 
+import { useStopwatch } from 'react-timer-hook';
+import { useNotion } from "../../contexts/NotionContext";
+//import LineGraph from "./components/LineGraph";
+import { CONFIG } from "../../utils/ApiHelper";
 
 const TrackPage = (props: any) => {
+    const notion = useNotion()
+    const [tracker, setTracker] = useState<any>()
+    const [eegTracker, setEEGTracker] = useState<any>()
     const [tracking, setTracking] = useState(false)
+    const {
+        seconds,
+        minutes,
+        hours,
+        start,
+        pause,
+        reset,
+      } = useStopwatch({ autoStart: false });
     const [trackedData, setTrackedData] = useState<any>([])
-    const [trackedDataEEG, setTrackedDataEEG] = useState<any>([])
-    const [trackedDataSignalQuality, setTrackedDataSignalQuality] = useState<any>([])
-    const dataTracking = useRef<any>([]);
-    const dataTrackingObject = useRef<any>({});
- 
-     
-
-    const randomIntFromInterval = (min: number, max: number) => { // min and max included 
-        return Math.floor(Math.random() * (max - min + 1) + min)
-    }
-
-   
-
-   /*  useEffect(() => {
-        return () => {
-            if(notion){
-                startReading()
-            }
-        }
-    }, []) */
+    const [trackedEEG, setTrackedEEG] = useState<any>([])
     const startReading = () => {
-        if(props.authData){
-            setTracking(true)
-            notion = props.authData.notion.brainwaves("powerByBand").subscribe((brainwaves: any) => {
-                setTrackedData((prev: any) => [...prev, brainwaves])
-                //setFile((prev: any) => [...prev, brainwaves])
-            });
-            notion2 = props.authData.notion.brainwaves("raw").subscribe((brainwaves: any) => {
-                setTrackedDataEEG((prev: any) => [...prev, brainwaves])
-                //console.log("eegdata: ", brainwaves)
-            });
-            notion3 = props.authData.notion.signalQuality().subscribe((signalQuality: any) => {
-                setTrackedDataSignalQuality((prev: any) => [...prev, signalQuality])
-                //console.log("signalquality: ", signalQuality)
-            });
-
-           
-  
-        }
+        setTracking(true)
+        reset()
+        start()
+        setTracker(notion.brainwaves("powerByBand").subscribe((brainwaves: any) => {
+            setTrackedData((prev: any) => [...prev, brainwaves])
+        }))
+        setEEGTracker(notion.brainwaves("raw").subscribe((eeg: any) => {
+            setTrackedEEG((prev: any) => [...prev, eeg])
+        }))
     }
 
+    const savePowerbands = (sessionId: string) => {
+        axios.post(CONFIG.addBands, {session_id: sessionId, bands: trackedData})
+        .then(res => {
+            console.log(res)
+            toast("Powerbands saved successfully")
+        })
+        .catch(err => toast.error("Powerbands failed to save"))
+    }
+
+    const saveRawEEGS = (sessionId: string) => {
+        axios.post(CONFIG.addEEG, {session_id: sessionId, eegArray: trackedEEG})
+        .then(res => {
+            console.log(res)
+            toast("EEG saved successfully")
+        })
+        .catch(err => toast.error("EEG failed to save"))
+    }
+
+    const saveSession = () => {
+        toast('Saving data')
+        let session = {
+            userId: notion?.api?.user?.uid,
+            recordDate: new Date()
+        }
+        axios.post(CONFIG.addSession, session)
+        .then(data => {
+            let sessionId = data.data.data._id
+            savePowerbands(sessionId)
+            saveRawEEGS(sessionId)
+        })
+    }
 
     const stopReading = () => {
         toast('Tracking completed')
-    
-
-    
-        console.log('the tracked data is', trackedDataSignalQuality, trackedDataEEG, trackedData); 
-     
         setTracking(false)
-        notion.unsubscribe();
-        notion2.unsubscribe();
-        notion3.unsubscribe();
-       
-    setTrackedData([]);
-        setTrackedDataEEG([]);
-        setTrackedDataSignalQuality([])
-  
+        pause()
+        reset()
+        tracker.unsubscribe();
+        eegTracker.unsubscribe();
         // hard coded saving
-  /*       axios.post("http://localhost:5676/api/v1/powerband/save", JSON.stringify({ 
-            signalquality: trackedDataSignalQuality, 
-            raweeg: trackedDataEEG,
-            powerband: trackedData
-        }),  { headers: {
-                // Overwrite Axios's automatically set Content-Type
-                'Content-Type': 'application/json'
-            }})
-        .then(res => toast("Data saved successfully"))
-        .catch(err => toast.error("Data failed to save"))
-      
-          */
-        
+        saveSession()
     }
     return(
         <div className="h-screen bg-slate-200">
-        
             <Header />
-            
             <div className="flex flex-row w-screen h-screen">
                 <SideMenu />
-              
-                {/* <div className="pt-24 px-5 flex-1">
-                    {`Is Loading : ${isLoading}` }
-                    {`Is ethereum : ${ethereum}` }
-                    {`Is provider : ${provider}` }
-                    {`Is contract : ${contract}` } */}
-
-                
-                    <div className="flex flex-col items-center justify-center bg-white rounded-xl p-5 h-72">
+                <div className="pt-24 px-5 flex-1">
+                    <div className="flex flex-col items-center justify-center bg-white rounded-xl p-5">
+                        {tracking && (
+                            <div style={{textAlign: 'center'}}>
+                                <div style={{fontSize: '20px'}}>
+                                    <span>{hours}</span>:<span>{minutes}</span>:<span>{seconds}</span>
+                                </div>
+                            </div>
+                        )}
                         {tracking 
                         ?
                             <Pulser onClick={stopReading} />
+                            // <div className="flex flex-col items-center justify-center">
+                            //     <LineGraph />
+                            //     <button className="text-white text-sm px-2 py-1 rounded-2xl bg-purple-500" onClick={stopReading}>Stop Tracking</button>
+                            // </div>
                         :
                             <>
                                 <p className="mb-3">Click the button below to begin EEG data collection </p>
@@ -119,7 +110,7 @@ const TrackPage = (props: any) => {
                     </div>
                 </div>
             </div>
-       // </div>
+        </div>
     )
 }
 

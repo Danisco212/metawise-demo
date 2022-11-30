@@ -124,6 +124,7 @@ importers:
       react-redux: ^8.0.4
       react-router-dom: ^6.4.2
       react-scripts: 5.0.1
+      react-timer-hook: ^3.0.5
       react-toastify: ^9.1.1
       redux: ^4.2.0
       redux-thunk: ^2.4.1
@@ -169,6 +170,7 @@ importers:
       react-redux: 8.0.4_h6epe7l2gr2z2rhkgdu6cxyvqq
       react-router-dom: 6.4.2_biqbaboplfbrettd7655fr4n2y
       react-scripts: 5.0.1_uz2ogxeagc4rbieizlfzyaazee
+      react-timer-hook: 3.0.5_biqbaboplfbrettd7655fr4n2y
       react-toastify: 9.1.1_biqbaboplfbrettd7655fr4n2y
       redux: 4.2.0
       redux-thunk: 2.4.1_redux@4.2.0
@@ -13891,6 +13893,16 @@ packages:
       - webpack-cli
       - webpack-hot-middleware
       - webpack-plugin-serve
+    dev: false
+
+  /react-timer-hook/3.0.5_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-n+98SdmYvui2ne3KyWb3Ldu4k0NYQa3g/VzW6VEIfZJ8GAk/jJsIY700M8Nd2vNSTj05c7wKyQfJBqZ0x7zfiA==}
+    peerDependencies:
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react-toastify/9.1.1_biqbaboplfbrettd7655fr4n2y:

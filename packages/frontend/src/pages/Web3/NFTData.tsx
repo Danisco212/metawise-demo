@@ -1,5 +1,5 @@
 // @ts-nocheck
-import React, { Component, useEffect, useState } from "react";
+import React, { Component } from "react";
 import Web3 from "web3";
 import detectEthereumProvider from "@metamask/detect-provider";
 import Metawise from './abis/Metawise.json';
@@ -7,7 +7,7 @@ import Metawise from './abis/Metawise.json';
 
 import { MDBCard, MDBCardBody, MDBCardTitle, MDBCardText, MDBCardImage, MDBBtn } from 'mdb-react-ui-kit';
 //import './css/App.css';
-import TokenData from "./TokenData";
+//import TokenData from "./TokenData";
 //import MetaMaskAuth from './metamaskauth';
 
 
@@ -22,6 +22,7 @@ class NFTData extends Component {
 
     async loadWeb3() {
         const provider = await detectEthereumProvider();
+
         if (window.eth) {
             window.web3 = new Web3(window.ethereum);
             await window.ethereum.enable();
