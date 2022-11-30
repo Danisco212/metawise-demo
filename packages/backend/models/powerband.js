@@ -103,5 +103,5 @@ const powerbandSchema = new Schema({
     
 }, { timestamps: true })
 
-var PowerbandData = mongoose.model('powerbands', powerbandSchema);
+var PowerbandData = mongoose.model('eegdatadb', powerbandSchema);
 module.exports = PowerbandData ;

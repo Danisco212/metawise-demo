@@ -32,7 +32,7 @@ module.exports = {
       
   },
   contracts_directory: './web3/contracts/',
-  contracts_build_directory: './web3/abis',  
+  contracts_build_directory: '../frontend/src/abis/',  
  
   compilers: {
     solc: {

@@ -3,6 +3,9 @@ import { logo, profileImg } from "../assets";
 import { AiOutlineLogout } from 'react-icons/ai'
 import { useCookies } from "react-cookie"
 import { connect } from "react-redux";
+import { MdAccountBalance, MdAccountBalanceWallet } from "react-icons/md";
+
+
 let notion: any
 
 type NotionStatus = {
@@ -17,6 +20,14 @@ type NotionStatus = {
 }
 export const Header = (props: any) => {
     const [notionStatus, setNotionStatus] = useState<NotionStatus>()
+
+  
+    useEffect(() => {
+        if (notionStatus) {
+            setNotionStatus(notionStatus)
+        }
+    }, [notionStatus])
+
     useEffect(() => {
         if(props.authData){
             notion = props.authData.notion
@@ -45,6 +56,7 @@ export const Header = (props: any) => {
                     <p className="text-sm">{notionStatus.battery}%</p>
                 </div>
             )}
+          
             <div className="flex flex-row items-center">
                 <img className="mr-1 w-10 h-10 rounded-full resize" src={profileImg} alt="" />
                 <p className="mr-5 text-xs text-neutral-400">{cookie.metawise_user}</p>
