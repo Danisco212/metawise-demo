@@ -52,12 +52,12 @@ function isMobileDevice() {
         <Address userAddress={userAddress} />
       </div>
     ) : (
-       <ConnectWallet setUserAddress={setUserAddress}/>
+       <ConnectWallet userAddress={userAddress} setUserAddress={setUserAddress}/>
     );
   }
   
   
-   function ConnectWallet({ setUserAddress }) {
+   function ConnectWallet({ userAddress, setUserAddress }) {
     if (isMobileDevice()) {
       const dappUrl = "http://localhost:3000/track"; // TODO enter your dapp URL. For example: https://uniswap.exchange. (don't enter the "https://")
       const metamaskAppDeepLink = "https://metamask.app.link/dapp/" + dappUrl;

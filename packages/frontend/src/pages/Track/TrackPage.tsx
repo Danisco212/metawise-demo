@@ -1,3 +1,4 @@
+// @ts-nocheck
 import axios from "axios";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
@@ -10,9 +11,79 @@ import { useStopwatch } from 'react-timer-hook';
 import { useNotion } from "../../contexts/NotionContext";
 //import LineGraph from "./components/LineGraph";
 import { CONFIG } from "../../utils/ApiHelper";
+import detectEthereumProvider from "@metamask/detect-provider";
+import UnconsciousEnergyToken from '../Web3/abis/UnconsciousEnergyToken.json';
+import Web3 from "web3";
 
 const TrackPage = (props: any) => {
-    const notion = useNotion()
+    const [account1, setAccount1] = useState()
+    const [UET, setUET] = useState()
+    const [UETBalance, setUETBalance] = useState()
+    const [UETTotalSupply, setUETTotalSupply] = useState()
+    const [loadingWeb3, setLoadingWeb3] = useState(false)
+
+    const mintTokens = (time) => {
+        let amount = time * 1
+        setLoadingWeb3(true)
+        UET.methods.mint2(account1, amount).send({from: account1}).on('transactionHash', (hash) => {
+            setLoadingWeb3(false)
+            toast('Congrats! You have minted some $UE')
+        })
+    }
+
+    useEffect(() => {
+        // @ts-ignore
+        loadAllData()
+    }, [])
+
+    const loadAllData = async() => {
+        await loadWeb3()
+        await loadBlockchainData()
+    }
+
+    // web3 stuffs
+    const loadWeb3 = async () => {
+        await detectEthereumProvider();
+        if(window.ethereum){
+            window.web3 = new Web3(window.ethereum);
+            await window.ethereum.enable();
+        } else if (window.web3){
+           window.web3 = new Web3(window.web3.currentProvider);
+        } else {
+            window.alert('No Ethereum browser detected! You can check out metamask')
+        }
+    }
+
+    const loadBlockchainData = async () => {
+        const web3 = window.web3;
+        const accounts = await web3.eth.getAccounts();
+        console.log(accounts)
+        setAccount1(accounts[0])
+
+        const networkId = await web3.eth.net.getId();
+
+        const UETData = UnconsciousEnergyToken.networks[networkId];
+        if (UETData) {
+            const mUET = new web3.eth.Contract(UnconsciousEnergyToken.abi, UETData.address);
+            setUET(mUET)
+            let mUETBalance = await mUET.methods.balanceOf(accounts[0]).call();
+            let mUETTotalSupply = await mUET.methods.totalSupply().call();
+            setUETBalance(window.web3.utils.fromWei(mUETBalance.toString(), 'Ether'))
+            setUETTotalSupply(window.web3.utils.fromWei(mUETTotalSupply.toString(), 'Ether'))
+        } else {
+            alert('Error!  UnconsciousEnergyToken contract not deployed - no detected network!')
+        }
+        setLoadingWeb3(false)
+    }
+    const [notion, setNotion] = useState(null)
+    useEffect(() => {
+        try {
+            setNotion(props.authData.notion)
+        } catch (error) {
+            console.log(error)
+        }
+    }, [props])
+    // const notion = useNotion()
     const [tracker, setTracker] = useState<any>()
     const [eegTracker, setEEGTracker] = useState<any>()
     const [tracking, setTracking] = useState(false)
@@ -27,6 +98,8 @@ const TrackPage = (props: any) => {
     const [trackedData, setTrackedData] = useState<any>([])
     const [trackedEEG, setTrackedEEG] = useState<any>([])
     const startReading = () => {
+        // mintTokens(10) // minting for 10 minutes
+        // return
         setTracking(true)
         reset()
         start()
@@ -97,10 +170,6 @@ const TrackPage = (props: any) => {
                         {tracking 
                         ?
                             <Pulser onClick={stopReading} />
-                            // <div className="flex flex-col items-center justify-center">
-                            //     <LineGraph />
-                            //     <button className="text-white text-sm px-2 py-1 rounded-2xl bg-purple-500" onClick={stopReading}>Stop Tracking</button>
-                            // </div>
                         :
                             <>
                                 <p className="mb-3">Click the button below to begin EEG data collection </p>

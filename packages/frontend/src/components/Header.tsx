@@ -19,7 +19,16 @@ type NotionStatus = {
     state: string
 }
 export const Header = (props: any) => {
-    const notion = useNotion()
+    const [notion, setNotion] = useState(null)
+    useEffect(() => {
+        // console.log(props.authData)
+        try {
+            setNotion(props.authData.notion)
+        } catch (error) {
+            console.log(error)
+        }
+    }, [props])
+    // const notion = useNotion()
     const [notionStatus, setNotionStatus] = useState<NotionStatus>({
         battery: 0,
         charging: false,
@@ -31,10 +40,12 @@ export const Header = (props: any) => {
         state: 'connecting...'
     })
     useEffect(() => {
-        notion.status().subscribe((status: any) => {
-            console.log('notion status', status)
-            setNotionStatus(status)
-        })
+        if(notion){
+            notion.status().subscribe((status: any) => {
+                console.log('notion status', status)
+                setNotionStatus(status)
+            })
+        }
     }, [notion])
     const [cookie, setCookie] = useCookies(['metawise_auth', 'metawise_user'])
     const logout = async () => {

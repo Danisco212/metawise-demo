@@ -18,8 +18,8 @@ export const SideMenu = () => {
             </div>
             <p className="mx-5 mb-2 mt-5 text-neutral-400 text-sm">MENU</p>
             <SideMenuItem icon={<MdTrackChanges color="purple" size={25} />} label="Track EEG" />
-            <SideMenuItem icon={<MdTrackChanges color="purple" size={25} />} label="NFTs" />
-            <SideMenuItem icon={<MdTrackChanges color="purple" size={25} />} label="Tokens" />
+            {/* <SideMenuItem icon={<MdTrackChanges color="purple" size={25} />} label="NFTs" />
+            <SideMenuItem icon={<MdTrackChanges color="purple" size={25} />} label="Tokens" /> */}
 
             <div className="absolute bottom-10 mx-3 flex flex-col items-center px-2 py-4 bg-slate-100 rounded-2xl">
                 <p className="text-center mb-2">Ready to dive into a meditative state?</p>

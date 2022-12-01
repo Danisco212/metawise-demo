@@ -119,7 +119,6 @@ class TokenData extends Component {
                 mintTokens={this.mintTokens}
                 // overallEEGQuality={this.state.overallEEGQuality}
                 tokenCount={this.state.tokenCount}
-
             />
         }
    
