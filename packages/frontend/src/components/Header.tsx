@@ -5,7 +5,10 @@ import { AiOutlineLogout } from 'react-icons/ai'
 import { useCookies } from "react-cookie"
 import { connect } from "react-redux";
 import { useNotion } from "../contexts/NotionContext";
+import detectEthereumProvider from "@metamask/detect-provider";
+import UnconsciousEnergyToken from '../pages/Web3/abis/UnconsciousEnergyToken.json';
 import  MetaMaskAuth  from "./Metamaskauth"
+import Web3 from "web3";
 
 
 type NotionStatus = {
@@ -20,6 +23,45 @@ type NotionStatus = {
 }
 export const Header = (props: any) => {
     const [notion, setNotion] = useState(null)
+    const [UETBalance, setUETBalance] = useState('')
+    useEffect(() => {
+        // @ts-ignore
+        loadAllData()
+    }, [])
+
+    const loadAllData = async() => {
+        await loadWeb3()
+        await loadBlockchainData()
+    }
+
+    // web3 stuffs
+    const loadWeb3 = async () => {
+        await detectEthereumProvider();
+        if(window.ethereum){
+            window.web3 = new Web3(window.ethereum);
+            await window.ethereum.enable();
+        } else if (window.web3){
+           window.web3 = new Web3(window.web3.currentProvider);
+        } else {
+            window.alert('No Ethereum browser detected! You can check out metamask')
+        }
+    }
+
+    const loadBlockchainData = async () => {
+        const web3 = window.web3;
+        const accounts = await web3.eth.getAccounts();
+
+        const networkId = await web3.eth.net.getId();
+
+        const UETData = UnconsciousEnergyToken.networks[networkId];
+        if (UETData) {
+            const mUET = new web3.eth.Contract(UnconsciousEnergyToken.abi, UETData.address);
+            let mUETBalance = await mUET.methods.balanceOf(accounts[0]).call();
+            setUETBalance(window.web3.utils.fromWei(mUETBalance.toString(), 'Ether'))
+        } else {
+            alert('Error!  UnconsciousEnergyToken contract not deployed - no detected network!')
+        }
+    }
     useEffect(() => {
         // console.log(props.authData)
         try {
@@ -72,7 +114,7 @@ export const Header = (props: any) => {
             </div>
             <div className="flex flex-row items-center">
                 <img className="mr-1 w-10 h-10 rounded-full resize" src={profileImg} alt="" />
-                <p className="mr-5 text-xs text-neutral-400">{notion?.api?.user?.email}</p>
+                <p className="mr-5 text-xs text-neutral-400">{notion?.api?.user?.email} <p title={UETBalance}>({UETBalance.substring(0, 5)}$UE)</p> </p>
                 <AiOutlineLogout onClick={logout} size={25} className="cursor-pointer" />
             </div>
         </header>
