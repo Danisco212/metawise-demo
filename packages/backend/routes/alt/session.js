@@ -4,6 +4,7 @@ import SessionPowerbandData from '../../models/alt/sessionPowerband.cjs'
 const {db} = SessionData
 import { ObjectId } from 'bson'
 import SessionEEGs from '../../models/alt/sessionRawEEG.cjs'
+import UnclaimedTokeks from '../../models/unclaimedtokens.cjs'
 
 const router = Router()
 
@@ -55,6 +56,57 @@ router.post("/session/add-eegs", async (req, res, next) =>{
         return newData
     }))
     return res.json({status: true, message: "The session eeg is saved"})
+})
+
+router.post("/unclaimed-token/add", async (req, res, next) =>{
+    const {walletId, amount} = req.body
+    let unclaimed = await UnclaimedTokeks.find({wallet_id: walletId})
+    if(unclaimed.length === 0){
+        let savedData = await UnclaimedTokeks.create({
+            wallet_id: walletId,
+            current_amount: amount,
+            lifetime_amount: amount,
+        })
+        return res.json({status: true, message: "Stored unclaimed tokens", data: savedData})
+    } else {
+        let initialUnclaimed = unclaimed[0].toObject()
+        await UnclaimedTokeks.updateOne(
+            { wallet_id: walletId },
+            { 
+                lifetime_amount: initialUnclaimed.lifetime_amount + amount,
+                current_amount: initialUnclaimed.current_amount + amount,
+            }
+        )
+        let savedData = await UnclaimedTokeks.find({wallet_id: walletId})
+        return res.json({status: true, message: "Updated unclaimed tokens", data: savedData[0].toObject()})
+    }
+})
+
+router.post("/unclaimed-token/claim", async (req, res, next) =>{
+    const {walletId} = req.body
+    let unclaimed = await UnclaimedTokeks.find({wallet_id: walletId})
+    if(unclaimed.length > 0){
+        await UnclaimedTokeks.updateOne(
+            { wallet_id: walletId },
+            {
+                current_amount: 0,
+            },
+        )
+        let savedData = await UnclaimedTokeks.find({wallet_id: walletId})
+        return res.json({status: true, message: "Stored unclaimed tokens", data: savedData[0].toObject()})
+    } else {
+        return res.json({status: false, message: "You have no unclaimed tokens"})
+    }
+})
+
+router.get("/unclaimed-token", async (req, res, next) =>{
+    const {walletId} = req.query
+    let unclaimed = await UnclaimedTokeks.find({wallet_id: walletId})
+    if(unclaimed.length > 0){
+        return res.json({status: true, message: "Your unclaimed tokens", data: unclaimed[0].toObject()})
+    } else {
+        return res.json({status: false, message: "You have no unclaimed tokens"})
+    }
 })
 
 export default router

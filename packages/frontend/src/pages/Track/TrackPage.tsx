@@ -22,15 +22,6 @@ const TrackPage = (props: any) => {
     const [UETTotalSupply, setUETTotalSupply] = useState()
     const [loadingWeb3, setLoadingWeb3] = useState(false)
 
-    const mintTokens = (time) => {
-        let amount = time * 1
-        setLoadingWeb3(true)
-        UET.methods.mint2(account1, amount).send({from: account1}).on('transactionHash', (hash) => {
-            setLoadingWeb3(false)
-            toast('Congrats! You have minted some $UE')
-        })
-    }
-
     useEffect(() => {
         // @ts-ignore
         loadAllData()
@@ -57,7 +48,7 @@ const TrackPage = (props: any) => {
     const loadBlockchainData = async () => {
         const web3 = window.web3;
         const accounts = await web3.eth.getAccounts();
-        console.log(accounts)
+        console.log('the account we have here is', accounts[0])
         setAccount1(accounts[0])
 
         const networkId = await web3.eth.net.getId();
@@ -143,9 +134,30 @@ const TrackPage = (props: any) => {
         })
     }
 
+    const saveUnclaimed = (time) => {
+        if(account1){
+            let earned = 0.0001 * time
+            console.log('earned', earned)
+            axios.post(CONFIG.addUnclaimed, {walletId: account1, amount: earned})
+            .then(data => {
+                console.log(data.data)
+                toast('You have earned some $UE')
+            })
+            .catch(err => {
+                console.log(err)
+                toast('Something went wrong, failed to earn $UE')
+            })
+        }
+        
+    }
+
     const stopReading = () => {
         toast('Tracking completed')
         setTracking(false)
+        // saving only minutes
+        const trackMin = minutes;
+        const trackSeconds = seconds;
+        saveUnclaimed((trackMin * 60) + trackSeconds)
         pause()
         reset()
         tracker.unsubscribe();
