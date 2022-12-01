@@ -2,7 +2,7 @@ const LIVE = 'https://metawise-dojo-backend.vercel.app/api/v1/'
 
 const STAGE = 'http://localhost:5676/api/v1/'
 
-const BASE_URL = STAGE
+const BASE_URL = LIVE
 
 export const CONFIG = {
     getAuth: BASE_URL + 'get-oauth-url',

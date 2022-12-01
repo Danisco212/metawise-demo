@@ -43,10 +43,16 @@ export const Header = (props: any) => {
 
     const clearUnclaimed = () => {
         axios.post(CONFIG.claimTokens, {walletId: wallet})
-        .then(data => {
+        .then(async data => {
             console.log(data.data)
             if(data?.data?.data){
                 setTokens(data.data.data.current_amount)
+            }
+            try {
+                let mUETBalance = await UET.methods.balanceOf(wallet).call();
+                setUETBalance(window.web3.utils.fromWei(mUETBalance.toString(), 'Ether'))
+            } catch (error) {
+                console.log(error)
             }
         })
         .catch(err => {
@@ -148,7 +154,7 @@ export const Header = (props: any) => {
         <header className="shadow z-10 fixed bg-white p-10 max-h-10 w-screen flex flex-row items-center justify-between">
             <div className="cursor-pointer flex flex-row items-center">
                 <img className=" rounded-full h-7 w-7 mr-2" src={logo} alt='' />
-                <p className="font-bold text-sm">Metawise</p>
+                <p className="font-bold text-sm">Metawise Dojo</p>
             </div>
             {notionStatus && (
                 <div className="flex flex-row items-center justify-center">
