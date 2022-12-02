@@ -136,7 +136,7 @@ const TrackPage = (props: any) => {
 
     const saveUnclaimed = (time) => {
         if(account1){
-            let earned = 0.0001 * time
+            let earned = 0.001 * time
             console.log('earned', earned)
             axios.post(CONFIG.addUnclaimed, {walletId: account1, amount: earned})
             .then(data => {
